@@ -17,7 +17,8 @@ public class Todo {
         return description;
     }
 
-    public void viewTodo() {
-        System.out.format("Titulo: %s \nDescricao: %s \n", name, description);
+    @Override
+    public String toString() {
+        return String.format("Titulo: %s \nDescricao: %s \n", name, description);
     }
 }

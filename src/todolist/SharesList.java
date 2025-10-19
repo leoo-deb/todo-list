@@ -32,6 +32,16 @@ public class SharesList {
             System.out.print("Digite a descricao da tarefa: ");
             String desc = sc.nextLine();
             System.out.println("-----------------------------");
+
+            if (!name.matches("^[a-zA-Z\\s]{3,16}$")) {
+                System.out.println("ERROR: O nome deve ter no minimo 3 caracteres.");
+                break;
+            }
+            if (!desc.matches("^[a-zA-Z\\s]{5,100}$")) {
+                System.out.println("ERROR: A descricao deve ter no minimo 3 caracteres.");
+                break;
+            }
+
             list2.add(new Todo(name, desc));
             System.out.println("Tarefa criada com sucesso!");
 
@@ -124,7 +134,7 @@ public class SharesList {
         if (!(list2.isEmpty())) {
             for (Todo a : list2) {
                 System.out.format("-----------INDEX %d-----------\n", list2.indexOf(a));
-                a.viewTodo();
+                System.out.println(a);
             }
             System.out.println("-----------------------------");
         } else {
@@ -137,7 +147,7 @@ public class SharesList {
             do {
                 for (Todo a : list2) {
                     System.out.format("-----------TAREFA %d----------\n", list2.indexOf(a) + 1);
-                    a.viewTodo();
+                    System.out.println(a);
                 }
 
                 System.out.println("-----------------------------");
