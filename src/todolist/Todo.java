@@ -19,6 +19,6 @@ public class Todo {
 
     @Override
     public String toString() {
-        return String.format("Titulo: %s \nDescricao: %s \n", name, description);
+        return String.format("Titulo: %s \nDescricao: %s", name, description);
     }
 }

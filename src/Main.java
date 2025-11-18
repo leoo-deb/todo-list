@@ -1,5 +1,6 @@
 import todolist.SharesList;
 
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class Main {
@@ -19,12 +20,16 @@ public class Main {
             }
 
             if (op2 == 2) {
-                shares.viewManager();
+                shares.findList();
             }
 
             if (op2 == 3) {
+                shares.viewManager();
+            }
+
+            if (op2 == 4) {
                 shares.viewList();
             }
-        } while (op2 != 4);
+        } while (op2 != 5);
     }
 }

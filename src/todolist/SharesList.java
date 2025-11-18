@@ -1,12 +1,11 @@
 package todolist;
 
-import java.util.ArrayList;
-import java.util.Scanner;
+import java.util.*;
 
 public class SharesList {
     private String op;
-    private ArrayList<Todo> list2;
-    private Scanner sc = new Scanner(System.in);
+    private final List<Todo> list2;
+    private final Scanner sc = new Scanner(System.in);
 
     public SharesList() {
         this.list2 = new ArrayList<>();
@@ -16,31 +15,44 @@ public class SharesList {
         System.out.println("""
                 ---------HOME PAGE-----------
                 [1] Criar tarefas
-                [2] Gerenciar tarefas
-                [3] Ver tarefas
-                [4] Sair
+                [2] Buscar tarefas
+                [3] Gerenciar tarefas
+                [4] Ver tarefas
+                [5] Sair
                 -----------------------------""");
         System.out.print("Escolha uma opcao: ");
     }
 
     public void addList() {
+        String name, desc;
+
         do {
             System.out.println("-----------------------------");
-            System.out.print("Digite o nome da tarefa: ");
-            String name = sc.nextLine();
+            while (true) {
+                System.out.print("Digite o nome da tarefa: ");
+                name = sc.nextLine();
 
-            System.out.print("Digite a descricao da tarefa: ");
-            String desc = sc.nextLine();
-            System.out.println("-----------------------------");
-
-            if (!name.matches("^[a-zA-Z\\s]{3,16}$")) {
+                if (name.matches("^[a-zA-Z\\s\\d]{3,16}$")) {
+                    for (Todo nameEqual : list2) {
+                        if (nameEqual.getName().equals(name)) {
+                            System.out.println("ERROR: Ja possui uma lista com este nome.");
+                        }
+                        return;
+                    }
+                    break;
+                }
                 System.out.println("ERROR: O nome deve ter no minimo 3 caracteres.");
-                break;
             }
-            if (!desc.matches("^[a-zA-Z\\s]{5,100}$")) {
-                System.out.println("ERROR: A descricao deve ter no minimo 3 caracteres.");
-                break;
+
+            while (true) {
+                System.out.print("Digite a descricao da tarefa: ");
+                desc = sc.nextLine();
+                if (desc.matches("^[a-zA-Z\\s\\d]{5,100}$")) {
+                    break;
+                }
+                System.out.println("ERROR: A descricao deve ter no minimo 5 caracteres.");
             }
+            System.out.println("-----------------------------");
 
             list2.add(new Todo(name, desc));
             System.out.println("Tarefa criada com sucesso!");
@@ -48,6 +60,53 @@ public class SharesList {
             System.out.print("Para voltar para o inicio pressione (ENTER).");
             op = sc.nextLine();
         } while (!op.isBlank());
+    }
+
+    public void findList() {
+        String name, opt;
+        int find;
+
+        if (!list2.isEmpty()) {
+            System.out.println("""
+                        ----------FIND TASK----------
+                        [1] Realizar nova busca
+                        [2] Sair
+                        -----------------------------""");
+            System.out.print("Escolha uma opcao: ");
+            find = sc.nextInt();
+            sc.nextLine();
+
+            do {
+                if (find == 1) {
+                    List<Todo> findList = new ArrayList<>();
+                    System.out.print("Digite o nome: ");
+                    name = sc.nextLine().toLowerCase();
+
+                    for (Todo result : list2) {
+                        if (result.getName().contains(name)) {
+                            findList.add(result);
+                        }
+                    }
+
+                    if (findList.isEmpty()) {
+                        System.out.println("Nenhuma tarefa encontrada.");
+                    } else {
+                        System.out.println("-----------------------------");
+                        System.out.println("Terefa(s) encontrada(s): " + findList.size());
+                        for (Todo resultList : findList) {
+                            System.out.format("-----------TAREFA %d----------\n", list2.indexOf(resultList) + 1);
+                            System.out.println(resultList);
+                        }
+                        System.out.println("-----------------------------");
+                    }
+                }
+                System.out.print("Deseja fazer uma nova busca? [S/N] ");
+                opt = sc.next().toUpperCase();
+                sc.nextLine();
+            } while (!opt.equals("N"));
+        } else {
+            System.out.println("ERROR: Ainda nao existe uma lista para ser buscada.");
+        }
     }
 
     public void viewManager() {
@@ -126,7 +185,7 @@ public class SharesList {
                 }
             } while (op2 != 3);
         } else {
-            System.out.println("Ainda nao existe uma lista para ser gerenciada.");
+            System.out.println("ERROR: Ainda nao existe uma lista para ser gerenciada.");
         }
     }
 
@@ -138,7 +197,7 @@ public class SharesList {
             }
             System.out.println("-----------------------------");
         } else {
-            System.out.println("Ainda nao existe nenhuma lista criada no momento.");
+            System.out.println("ERROR: Ainda nao existe nenhuma lista criada no momento.");
         }
     }
 
@@ -155,7 +214,7 @@ public class SharesList {
                 op = sc.nextLine();
             } while (!op.isBlank());
         } else {
-            System.out.println("Ainda nao existe nenhuma lista criada no momento.");
+            System.out.println("ERROR: Ainda nao existe nenhuma lista criada no momento.");
         }
     }
 }
